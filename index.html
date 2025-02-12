@@ -11,3 +11,59 @@
     <model-viewer src="LumiChan.glb" auto-rotate camera-controls ar></model-viewer>
 </body>
 </html> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumi-Chan 3D Model</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+        #chatbox {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px;
+            width: 300px;
+        }
+        #lumi-video {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+
+    <video id="lumi-video" width="500" autoplay loop>
+        <source src="idle.mp4" type="video/mp4">
+    </video>
+
+    <input type="text" id="chatbox" placeholder="Type something...">
+    <button onclick="changeAnimation()">Send</button>
+
+    <script>
+        function changeAnimation() {
+            let chatInput = document.getElementById("chatbox").value.toLowerCase();
+            let video = document.getElementById("lumi-video");
+
+            if (chatInput.includes("happy")) {
+                video.src = "happy.mp4";
+            } else if (chatInput.includes("hi")) {
+                video.src = "hi.mp4";
+            } else {
+                video.src = "idle.mp4";
+            }
+
+            video.play();
+        }
+    </script>
+
+</body>
+</html>
