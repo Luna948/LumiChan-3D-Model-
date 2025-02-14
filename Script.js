@@ -1,4 +1,4 @@
-const socket = new WebSocket("ws://your-server-ip:8765"); // Replace with actual IP
+const socket = new WebSocket("ws://0.0.0.0:8765"); // Replace with actual IP
 
 socket.onopen = function () {
     console.log("Connected to WebSocket Server");
@@ -16,6 +16,10 @@ socket.onerror = function (error) {
 socket.onclose = function () {
     console.log("WebSocket Connection Closed");
 };
+
+document.getElementById("sendButton").addEventListener("click", function() {
+    let userInput = document.getElementById("userInput").value;
+    console.log("User Input:", userInput);
 
 function sendMessage() {
     let userInput = document.getElementById("userInput").value;
