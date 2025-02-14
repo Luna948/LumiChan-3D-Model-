@@ -20,6 +20,7 @@ socket.onclose = function () {
 document.getElementById("sendButton").addEventListener("click", function() {
     let userInput = document.getElementById("userInput").value;
     console.log("User Input:", userInput);
+});
 
 function sendMessage() {
     let userInput = document.getElementById("userInput").value;
@@ -37,4 +38,20 @@ function updateLumiAnimation(expression) {
     } else {
         model.src = "neutral_animation.glb";
     }
+}
+socket.onmessage = function(event) {
+    let animationType = event.data; // Backend se animation type milega
+    console.log("Received animation type:", animationType);
+
+    // VRoid model me animation apply karna
+    if (animationType === "happy") {
+        playAnimation("happy");
+    } else if (animationType === "sad") {
+        playAnimation("sad");
+    }
+};
+
+function playAnimation(animationName) {
+    console.log("Playing Animation:", animationName);
+    // Yaha Three.js ka VRM model code likhna hoga jo animation change kare
 }
