@@ -11,7 +11,7 @@ scene.add(light);
 
 // Load Lumi-Chan GLB Model
 const loader = new THREE.GLTFLoader();
-loader.load('https://raw.githubusercontent.com/YourUsername/LumiChan-3D/main/LumiChan.glb', function (gltf) {
+loader.load('https://raw.githubusercontent.com/Luna984/LumiChan-3D/main/LumiChan.glb', function (gltf) {
     let model = gltf.scene;
     model.position.set(0, -1, 0);  // Adjust model position
     scene.add(model);
