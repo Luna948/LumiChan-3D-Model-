@@ -1,57 +1,39 @@
-const socket = new WebSocket("ws://0.0.0.0:8765"); // Replace with actual IP
+// Scene Setup
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.getElementById("container").appendChild(renderer.domElement);
 
-socket.onopen = function () {
-    console.log("Connected to WebSocket Server");
-};
+// Lighting
+const light = new THREE.AmbientLight(0xffffff, 1.5);
+scene.add(light);
 
-socket.onmessage = function (event) {
-    console.log("Received:", event.data);
-    updateLumiAnimation(event.data); // Call function to update animation
-};
+// Load Lumi-Chan GLB Model
+const loader = new THREE.GLTFLoader();
+loader.load('https://raw.githubusercontent.com/YourUsername/LumiChan-3D/main/LumiChan.glb', function (gltf) {
+    let model = gltf.scene;
+    model.position.set(0, -1, 0);  // Adjust model position
+    scene.add(model);
 
-socket.onerror = function (error) {
-    console.log("WebSocket Error: ", error);
-};
+    // Rotate Animation
+    function animateModel() {
+        requestAnimationFrame(animateModel);
+        model.rotation.y += 0.01;  // Lumi-Chan will slowly rotate
+        renderer.render(scene, camera);
+    }
+    animateModel();
 
-socket.onclose = function () {
-    console.log("WebSocket Connection Closed");
-};
-
-document.getElementById("sendButton").addEventListener("click", function() {
-    let userInput = document.getElementById("userInput").value;
-    console.log("User Input:", userInput);
+}, undefined, function (error) {
+    console.error("GLB Load Error:", error);
 });
 
-function sendMessage() {
-    let userInput = document.getElementById("userInput").value;
-    socket.send(userInput); // Send user message to backend
-}
+// Camera Position
+camera.position.z = 3;
 
-// Function to update animation based on response
-function updateLumiAnimation(expression) {
-    let model = document.getElementById("lumiModel");
-    
-    if (expression === "show_happy_animation") {
-        model.src = "happy_animation.glb";
-    } else if (expression === "show_sad_animation") {
-        model.src = "sad_animation.glb";
-    } else {
-        model.src = "neutral_animation.glb";
-    }
-}
-socket.onmessage = function(event) {
-    let animationType = event.data; // Backend se animation type milega
-    console.log("Received animation type:", animationType);
-
-    // VRoid model me animation apply karna
-    if (animationType === "happy") {
-        playAnimation("happy");
-    } else if (animationType === "sad") {
-        playAnimation("sad");
-    }
-};
-
-function playAnimation(animationName) {
-    console.log("Playing Animation:", animationName);
-    // Yaha Three.js ka VRM model code likhna hoga jo animation change kare
-}
+// Resize Fix
+window.addEventListener('resize', () => {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+});
